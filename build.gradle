@@ -1,0 +1,16 @@
+plugins {
+    id "com.mkring.wildlydeplyplugin.deploy-wildfly-plugin" version "0.2.4"
+}
+
+apply plugin: 'ear'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    deploy project(path: ':ejb', configuration: 'archives')
+    deploy project(path: ':web', configuration: 'archives')
+
+//    earlib group: 'log4j', name: 'log4j', version: '1.2.15', ext: 'jar'
+}

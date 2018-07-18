@@ -1,0 +1,68 @@
+apply plugin: 'java'
+apply plugin: 'war'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies { classpath 'org.akhikhl.gretty:gretty:+' }
+}
+apply plugin: 'org.akhikhl.gretty'
+gretty {
+    servletContainer = 'jetty9.4' //jetty7, jetty8, jetty9, jetty9.3, jetty9.4
+    httpPort = 9090
+}
+
+group 'com.github.umkamax.hoteladvisor'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "http://mavensync.zkoss.org/maven2" }
+    maven { url "http://mavensync.zkoss.org/eval" }
+}
+
+sourceSets {
+    jettyRunner {
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+dependencies {
+    providedCompile project(':ejb')
+
+//    compileOnly "javax.enterprise:cdi-api:1.2"
+
+    compile "org.zkoss.zk:zk:${zkVersion}"
+    compile "org.zkoss.zk:zkplus:${zkVersion}"
+    compile "org.zkoss.zk:zkbind:${zkVersion}"
+    compile "org.zkoss.zk:zul:${zkVersion}"
+    compile "org.zkoss.zk:zuljsp:2.0"
+    compile "org.zkoss.zk:zkex:${zkVersion}"
+    compile "org.zkoss.zk:zkmax:${zkVersion}"
+    compile "org.zkoss.common:zcommon:${zkVersion}"
+    compile "org.zkoss.common:zweb:${zkVersion}"
+    compile "org.zkoss.zkforge.el:zcommons-el:1.1.0"
+    compile "org.zkoss.composite:zkcomposite:0.8.0"
+
+    compile "commons-io:commons-io:${commonsIoVersion}"
+    compile "com.googlecode.libphonenumber:libphonenumber:3.1"
+
+    testCompile group: 'org.hsqldb', name: 'hsqldb', version: '2.4.0'
+    testCompile "org.zkoss.zats:zats-mimic-ext7:${zatsVersion}"
+//    testCompile "junit:junit:${parent.junitVersion}"
+    //TODO remove
+    testCompile "junit:junit:4.12"
+
+    jettyRunnerRuntime "org.eclipse.jetty:jetty-runner:${jettyVersion}"
+    jettyRunnerRuntime "org.eclipse.jetty.websocket:javax-websocket-server-impl:${jettyVersion}"
+    jettyRunnerRuntime "javax.websocket:javax.websocket-api:${websocketApiVersion}"
+}
+
+task startJettyRunner(type: JavaExec) {
+    classpath = sourceSets.jettyRunner.runtimeClasspath
+    main 'org.eclipse.jetty.runner.Runner'
+    args '--path', "/${rootProject.name}", 'jetty-dev-context.xml'
+}

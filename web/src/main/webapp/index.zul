@@ -1,0 +1,48 @@
+<zk>
+    <window viewModel="@id('vm') @init('com.github.umkamax.hoteladvisor.viewmodel.PersonViewModel')">
+        <hlayout>
+            <panel title="Person" border="normal" hflex="1">
+                <panelchildren style="overflow:auto;">
+                    <listbox model="@load(vm.personList)" selectedItem="@bind(vm.selectedPerson)">
+                        <listhead>
+                            <listheader label="First Name" align="center"/>
+                            <listheader label="Middle Name" align="center"/>
+                            <listheader label="Last Name" align="center"/>
+                            <listheader label="Phone" width="100px" align="center"/>
+                        </listhead>
+                        <template name="model" var="person">
+                            <listitem>
+                                <listcell label="@load(person.firstName)"/>
+                                <listcell label="@load(person.middleName)"/>
+                                <listcell label="@load(person.lastName)"/>
+                                <listcell label="@load(person.phoneNumber)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </panelchildren>
+            </panel>
+            <panel title="Address" border="normal" hflex="1">
+                <panelchildren style="overflow:auto;">
+                    <listbox model="@load(vm.selectedPerson.addressList)">
+                        <listhead>
+                            <listheader label="ZIP" width="100" align="center"/>
+                            <listheader label="City" align="center"/>
+                            <listheader label="Street" align="center"/>
+                            <listheader label="Building" align="center"/>
+                            <listheader label="Appartment" align="center"/>
+                        </listhead>
+                        <template name="model" var="address">
+                            <listitem>
+                                <listcell label="@load(address.zipcode)"/>
+                                <listcell label="@load(address.city)"/>
+                                <listcell label="@load(address.street)"/>
+                                <listcell label="@load(address.building)"/>
+                                <listcell label="@load(address.appartment)"/>
+                            </listitem>
+                        </template>
+                    </listbox>
+                </panelchildren>
+            </panel>
+        </hlayout>
+    </window>
+</zk>

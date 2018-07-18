@@ -1,0 +1,4 @@
+rootProject.name = 'hotel-advisor-example-web'
+
+include ':ejb'
+project(':ejb').projectDir = new File(settingsDir, '../ejb')
